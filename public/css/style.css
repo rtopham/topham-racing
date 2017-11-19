@@ -1,0 +1,34 @@
+.appframe {
+/*  border: 1px dashed red;*/
+  width: 960px;
+ /* height: 1580px; */
+  /*float: left;*/
+  margin: 0 auto;
+  
+}
+
+.panel-title a {display: block; width: 100%; cursor: pointer;}
+
+
+.table td.centerthis{
+text-align: center;
+
+}
+
+.table th.centerthis {
+  text-align: center;
+  
+  }
+
+  .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: rgba(141, 235, 196, 0.726);
+ }
+
+ .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: rgba(236, 236, 77, 0.733);
+}
+
+.centerthis{
+
+text-align: center;
+}
