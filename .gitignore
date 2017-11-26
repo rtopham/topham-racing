@@ -4,5 +4,6 @@ public/js/vendor.bundle.js
 public/js/app.bundle.js.map
 public/js/vendor.bundle.js.map
 src/scratch.jsx
+scripts
 dist
 public/js/config.js
