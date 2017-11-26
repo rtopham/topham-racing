@@ -16,6 +16,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 
 import RaceListApp from './raceList.jsx';
 import RaceStats from './raceStats.jsx';
+import RaceStrava from './raceStrava.jsx';
 import RaceEdit from './raceEdit.jsx';
 import RaceAddModal from './raceAddModal.jsx';
 import LoginModal from './loginModal.jsx';
@@ -39,11 +40,14 @@ function Header(props) {
       <Navbar.Brand>Topham Racing</Navbar.Brand>
     </Navbar.Header>
     <Nav>
-      <LinkContainer to="/races">
+      <LinkContainer to="/racing/races">
         <NavItem>Races</NavItem>
       </LinkContainer>
-      <LinkContainer to="/stats">
+      <LinkContainer to="/racing/stats">
         <NavItem>Stats</NavItem>
+      </LinkContainer>
+      <LinkContainer to="/racing/strava">
+        <NavItem>Strava</NavItem>
       </LinkContainer>
     </Nav>
     <Nav pullRight>
@@ -64,7 +68,7 @@ const Footer = (props)=>{
 return(
   <div>
     <hr/>
-    <h6 className="centerthis">Race a Bike. Improve your life</h6>
+    <h6 className="centerthis">Race a bike. Improve your life</h6>
     <hr/>
     </div>
 )
@@ -88,26 +92,6 @@ class RoutedApp extends React.Component {
    this.logMeIn=this.logMeIn.bind(this);
 
     }
-/*
-componentDidMount(){
-fetch('api/users/me',{headers:  { 'Content-Type': 'application/json' }}).then(response =>{
-  if(!response.ok){
-     
-     return response.json().then(error=> Promise.reject(error));
-  }
-  
-  return response.json().then(data=>{
-//  console.log(data);
-  this.setState({user: data});
-//  console.log(this.state);
-
-  });
-});
-
-
-}    
-
-*/
 
  toggleModal(){
       this.setState({
@@ -140,7 +124,7 @@ logMeOut(){
        this.setState({user: newUser});
 
 //        this.setState({userName:updatedLogin.user_name, loggedIn: updatedLogin.loggedIn});
-        console.log(updatedLogin);
+//        console.log(updatedLogin);
         });  
   
     } else {
@@ -171,11 +155,13 @@ logMeOut(){
   
         
  { /*  <Route exact path="/races" loggedIn={"Hey there partner"} component={RaceListApp} />*/}
- <Route exact path="/races" render={props => <RaceListApp loggedIn={this.state.user.loggedIn} {...props} />} />
+ <Route exact path="/racing/races" render={props => <RaceListApp loggedIn={this.state.user.loggedIn} {...props} />} />
 
-    <Route exact path="/stats" component={RaceStats} />
-    <Route path="/races/:id" component={RaceEdit} /> 
-    <Redirect exact from="/" to="/races" />
+    <Route exact path="/racing/stats" component={RaceStats} />
+    <Route exact path="/racing/strava" component={RaceStrava} />
+    <Route path="/racing/races/:id" component={RaceEdit} /> 
+    <Redirect exact from="/racing" to="/racing/races" />
+    <Redirect exact from="/" to="/racing/races" />
 
     <Route path="*" component={NoMatch} />
    </Switch>

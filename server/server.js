@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
 const Race = require('./race.js');
+const fetch = require('node-fetch');
+
 
 const app = express();
 
@@ -26,7 +28,7 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 let userIsLoggedIn= false;
-
+let stravaToken="";
 let db;
 
 
@@ -47,6 +49,7 @@ app.all('/api/*', (req, res, next) => {
 
 
 app.get('/api/races', (req,res)=>{
+
   const filter = {};
 	
 	if (req.query.series) filter.series = req.query.series;
@@ -60,7 +63,7 @@ app.get('/api/races', (req,res)=>{
 
      filter.race_date= {$gte: new Date(requestedYear+"-01-01T00:00:00.000Z"), $lt: new Date(requestedYear+"-12-31T00:00:00.000Z")};
   }
-
+  
 
 
  db.collection('races').find(filter).sort({race_date: -1}).toArray().then(races =>{
@@ -68,7 +71,7 @@ app.get('/api/races', (req,res)=>{
 
   const metadata = {total_count: races.length};
 
-  res.json({_metadata: metadata, records: races });	
+  res.json({_metadata: metadata, records: races});	
 
 }).catch(error=> {
     console.log(error);
@@ -182,50 +185,17 @@ metadata["current_year_races_dnf"]=totalRacesDNF;
 res.json({_metadata: metadata, records: records, current_year_records: currentYearRecords});   
 
 
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});  
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});
-}).catch(error=> {
-    console.log(error);
-		res.status(500).json({message: `Internal Server Error: ${error}`});
-});
+})  
+})  
+})  
+})  
+})  
+})  
+})  
+})  
+})  
+})
+})
 }).catch(error=> {
     console.log(error);
 		res.status(500).json({message: `Internal Server Error: ${error}`});
@@ -281,13 +251,70 @@ db.collection('users').find({user_name:user.user_name}).limit(1).next()
 
 });
 
-app.get('/api/users/me', (req, res) => {
-  if (req.session && req.session.user) {
-    res.json(req.session.user);
+
+app.get('/api/strava/athlete/:id', (req, res) => {
+//  console.log(req.params.id);
+  let theAthlete=req.params.id;
+
+  fetch(`https://www.strava.com/api/v3/athletes/${theAthlete}/stats?access_token=${stravaToken}`)
+  .then(response => {
+  if (response.ok) {
+      response.json().then(data => {
+
+      res.json(data);
+
+      });
   } else {
-    res.json({ loggedIn: false, name: '' });
+      response.json().then(error => {
+      alert("No Strava Data Available:" +error.message);
+      });
   }
-});
+  })
+  .catch(err => {
+  alert("Error in fetching data from server:", err);
+  });  
+
+
+  });  
+
+app.get('/api/strava/activities/:id', (req, res) => {
+//  console.log(req.params.id);
+  let theEpoch=req.params.id;
+  let raceID=0;
+  let sufferScore=0;
+//  console.log('The Epoch Value is: ' + theEpoch);
+//  var beforeEpoch = theEpoch+86401;
+
+  fetch(`https://www.strava.com/api/v3/athlete/activities?access_token=${stravaToken}&after=${theEpoch}`)
+  .then(response => {
+  if (response.ok) {
+      response.json().then(data => {
+//      console.log(data);
+//      if (data[0]) console.log(data[0].id);else console.log('No Strava Data Available'); 
+
+      for(var i=0; i<3; i++){
+        if(data[i].suffer_score>sufferScore){
+          sufferScore=data[i].suffer_score;
+          raceID=data[i].id;
+        }
+ 
+      }  
+      res.json(raceID);
+
+      });
+  } else {
+      response.json().then(error => {
+      alert("No Strava Data Available:" +error.message);
+      });
+  }
+  })
+  .catch(err => {
+  alert("Error in fetching data from server:", err);
+  });  
+
+
+  });  
+
 
 app.post('/logout', (req, res) => {
   if (req.session) req.session.destroy();
@@ -301,7 +328,7 @@ app.get('/api/races/:id', (req, res) => {
   try {
     raceId = new ObjectId(req.params.id);
   } catch (error) {
-    res.status(422).json({ message: `Invalid issue ID format: ${error}` });
+    res.status(422).json({ message: `Invalid race ID format: ${error}` });
     return;
   }
 
@@ -334,8 +361,7 @@ app.put('/api/races/:id', (req, res) => {
     res.status(422).json({ message: `Invalid request: ${err}` });
     return;
   }
-
- // db.collection('races').updateOne({ _id: raceId }, Race.convertRace(newRace)).then(() =>
+ 
     db.collection('races').updateOne({ _id: raceId }, { race_name: newRace.race_name, series: newRace.series, race_date: new Date(newRace.race_date), location: newRace.location, time: newRace.time, rank: newRace.rank, category: newRace.category }).then(() =>
  
     db.collection('races').find({ _id: raceId }).limit(1)
@@ -375,13 +401,22 @@ app.get('*', (req, res) => {
 });
 
 
-app.get('*', (req, res) =>{
-      res.sendFile(path.resolve('public/index.html'));
-    });
-
-
 MongoClient.connect('mongodb://localhost/racing').then(connection => {
 	db=connection;
+
+
+db.collection('users').find({user_name: "reed"}).limit(1).next()
+.then(stravaUser=>{
+  if(!stravaUser) console.log('No such Token');
+  else{ 
+
+stravaToken=stravaUser.strava_token;
+
+}
+}).catch(error => {
+   console.log(error);
+   res.status(500).json({ message: `Internal Server Error: ${error}` }); 
+});
 
 
 app.listen(3000, () => {

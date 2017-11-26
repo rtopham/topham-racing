@@ -38,7 +38,7 @@ class LoginModal extends React.Component {
         if (this.state.toastType=='success') {
             var query='refresh';
             this.props.history.push({pathname: this.props.location.pathname, search: query});
-            this.props.history.push('/races');
+            this.props.history.push('/racing/races');
             this.props.onHide();
         }
         
@@ -69,7 +69,7 @@ class LoginModal extends React.Component {
                 if(!updatedLogin.loggedIn) this.showError('Invalid Username or Password');
                 else{
                 this.showSuccess('Logging In');
-                    console.log(updatedLogin);
+//                    console.log(updatedLogin);
                 }
                 this.props.logMeIn({user_name:updatedLogin.user_name, loggedIn: updatedLogin.loggedIn});
  //               console.log(this.state);

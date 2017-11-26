@@ -24,8 +24,17 @@ text-align: center;
     background-color: rgba(141, 235, 196, 0.726);
  }
 
+ .table-striped > tbody.strava > tr:nth-child(2n+1) > td, .table-striped > tbody.strava > tr:nth-child(2n+1) > th {
+  background-color: rgba(245, 86, 0, 0.867);
+}
+
+
  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: rgba(236, 236, 77, 0.733);
+}
+
+.table-hover tbody.strava tr:hover td, .table-hover tbody.strava tr:hover th {
+  background-color: rgba(245, 86, 0, 0.533);
 }
 
 .centerthis{

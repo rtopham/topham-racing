@@ -13,7 +13,7 @@ export default class RaceFilterLinks extends React.Component {
  setFilterSeries(e){
    
    e.preventDefault();
-   console.log(e.target.id);
+//   console.log(e.target.id);
    switch(e.target.id){
    case "N/A": this.props.setFilter('?series=N/A');break;
    case "ICUP": this.props.setFilter('?series=Intermountain Cup');break;

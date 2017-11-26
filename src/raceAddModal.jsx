@@ -36,7 +36,7 @@ class RaceAddModal extends React.Component {
         if (this.state.toastType=='success') {
             var query='refresh';
             this.props.history.push({pathname: this.props.location.pathname, search: query});
-            this.props.history.push('/races');
+            this.props.history.push('/racing/races');
             
         }
         this.props.onHide();
@@ -70,7 +70,7 @@ class RaceAddModal extends React.Component {
           if (response.ok) {
               response.json().then(updatedRace=>{
               this.showSuccess('Race Added');
-  //            this.props.history.push(`/races/${updatedRace._id}`);
+  //            this.props.history.push(`/racing/races/${updatedRace._id}`);
               });  
         
           } else {

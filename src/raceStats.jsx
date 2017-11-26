@@ -61,7 +61,7 @@ function YTDStats(props){
         
         }
 
-export default class RaceListApp extends React.Component {
+export default class RaceStats extends React.Component {
     constructor() {
         super();
         this.state = { races: [] , 
@@ -128,9 +128,7 @@ loadData() {
         .then(response => {
         if (response.ok) {
             response.json().then(data => {
-            //   console.log("Total count of records:", data._metadata.total_count);
-//            console.log('getting here');
-//              console.log(data);
+
             data.records.forEach(race => {
                 race.race_date = race.race_date = new Date(race.race_date)
                 .toISOString()
@@ -175,13 +173,6 @@ loadData() {
 
             this.setState({ytdStats: ytdstats});
 
-            
-
-
-//            console.log(alltime);
- //           console.log(ytdstats);
-            
-            
 
             });
         } else {

@@ -114,7 +114,7 @@ showError(message){
 
 dismissToast(){
     this.setState({toastVisible: false});
-    if (this.state.toastType=='success') this.props.history.push('/races');
+    if (this.state.toastType=='success') this.props.history.push('/racing/races');
 }
 
 toggleConfirmDelete(){
@@ -145,7 +145,7 @@ toggleConfirmDelete(){
           
           this.setState({ race: updatedRace });
           this.showSuccess('Updated race successfully.');
- //         this.props.history.push('/races');
+ //         this.props.history.push('/racing/races');
           
         });
       } else {
@@ -296,7 +296,7 @@ toggleConfirmDelete(){
               <Col smOffset={3} sm={6}>
               <ButtonToolbar>
           <Button bsStyle="primary" type="submit">Submit</Button>
-          <LinkContainer to= "/races">
+          <LinkContainer to= "/racing/races">
           <Button bsStyle="primary">Back to Races</Button>
           </LinkContainer>
           <Button className="pull-right" bsStyle="danger" onClick={this.onDeleteClick}><Glyphicon glyph="trash" /></Button>
