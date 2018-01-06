@@ -56,7 +56,7 @@ class RaceAddModal extends React.Component {
                 race_date: new Date(form.race_date.value).toISOString().slice(0, 10),// "new Date('"+form.race_date.value+"')",//form.race_date.value'2007-05-05')form.race_date.value,// new Date(form.race_date.value).toISOString(),
                 location: form.location.value,
                 time: form.time.value,
-                rank: form.rank.value,
+                rank: parseInt(form.rank.value),
                 category: form.category.value,
                 
         }

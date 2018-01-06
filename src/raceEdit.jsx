@@ -50,6 +50,7 @@ onChange(event, convertedValue) {
  //   console.log(convertedValue);
     race[event.target.name] = value;
  //   console.log(race);
+ //   if(event.target.name=="rank") console.log ("Modifying Rank");
     this.setState({ race });
   }
 /*

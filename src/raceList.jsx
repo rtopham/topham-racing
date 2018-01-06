@@ -44,7 +44,7 @@ return (
 }
 
 function RaceTable(props) {
-
+//console.log(props.races);
     const raceRows = props.races.map(race => (
       <RaceRow strava={props.strava} editCol={props.editCol} key={race._id} race={race} />
     ));
@@ -97,6 +97,15 @@ return(
 );
 }
 
+function EmptyQueryResult(){
+  return(
+    <div>
+      <h4>No Races Found</h4>
+      </div>
+
+  );
+}
+
 export default class RaceListApp extends React.Component {
   constructor(props) {
     super(props);
@@ -123,6 +132,7 @@ export default class RaceListApp extends React.Component {
                     podiums:0,
                     dnfs:0,
                  },
+                 emptyQueryResult: false,
                  
                                   
                 
@@ -141,7 +151,7 @@ export default class RaceListApp extends React.Component {
   
   componentDidUpdate(prevProps){
     
-
+    
     const oldQuery = prevProps.location.search;
     const newQuery = this.props.location.search;
     if(oldQuery === newQuery) {
@@ -211,7 +221,8 @@ window.open(`https://www.strava.com/activities/${raceID}`);
 
             this.setState({ races: data.records });
 
-
+            if(!data.records[0]) this.setState({emptyQueryResult:true}); else this.setState({emptyQueryResult:false});
+            //console.log(this.state.emptyQueryResult);
             let temp=[];
             temp.push(data.records[0]);
             this.setState({lastRace: temp});
@@ -230,9 +241,9 @@ window.open(`https://www.strava.com/activities/${raceID}`);
   }
 
   render() {
-
-
-    return (
+    //console.log(this.state.emptyQueryResult);
+    if(this.state.emptyQueryResult) return(<EmptyQueryResult/>);
+    else return (
       <div>
         <LastRace strava={this.getStravaData} races={this.state.lastRace} /> 
         <hr/>

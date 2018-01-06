@@ -7,6 +7,7 @@ export default class RaceFilterLinks extends React.Component {
     this.setFilterSeries = this.setFilterSeries.bind(this);
     this.setFilterRank = this.setFilterRank.bind(this);
     this.setFilterCurrentSeason = this.setFilterCurrentSeason.bind(this);
+    this.setFilterLastSeason = this.setFilterLastSeason.bind(this);
     this.setFilterPodiums = this.setFilterPodiums.bind(this);
   }
   
@@ -33,14 +34,21 @@ export default class RaceFilterLinks extends React.Component {
    
  } 
 
- setFilterCurrentSeason(e){
+setFilterCurrentSeason(e){
   e.preventDefault();
 //  this.props.setFilter('?race_date=current_season');
 let currentYear=(new Date()).getFullYear();
 this.props.setFilter('?race_date='+ currentYear)
 //this.props.setFilter('{race_date: {$gte: ISODate("2017-01-01T00:00:00.000Z"), $lt: ISODate("2017-12-31T00:00:00.000Z")}}');
+}
 
-  
+setFilterLastSeason(e){
+  e.preventDefault();
+//  this.props.setFilter('?race_date=current_season');
+let currentYear=(new Date()).getFullYear();
+let lastYear=currentYear-1;
+this.props.setFilter('?race_date='+ lastYear)
+//this.props.setFilter('{race_date: {$gte: ISODate("2017-01-01T00:00:00.000Z"), $lt: ISODate("2017-12-31T00:00:00.000Z")}}');
 }
 
 setFilterPodiums(e){
@@ -58,7 +66,9 @@ setFilterPodiums(e){
       <div>
         <a href="#" onClick={this.clearFilter}>All Races</a>
         <Separator />
-        <a href="#" onClick={this.setFilterCurrentSeason}>Current Season</a>
+        <a href="#" onClick={this.setFilterCurrentSeason}>Current Season</a> 
+        <Separator />
+        <a href="#" onClick={this.setFilterLastSeason}>Last Season</a>
         <Separator />
         <a href="#" id="ICUP" onClick={this.setFilterSeries}>ICUP Races</a>
         <Separator/>

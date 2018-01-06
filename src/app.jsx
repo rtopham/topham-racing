@@ -40,7 +40,7 @@ function Header(props) {
       <Navbar.Brand>Topham Racing</Navbar.Brand>
     </Navbar.Header>
     <Nav>
-      <LinkContainer to="/racing/races">
+      <LinkContainer to="/">
         <NavItem>Races</NavItem>
       </LinkContainer>
       <LinkContainer to="/racing/stats">
