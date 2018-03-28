@@ -282,17 +282,21 @@ app.get('/api/strava/activities/:id', (req, res) => {
   let theEpoch=req.params.id;
   let raceID=0;
   let sufferScore=0;
+ 
 //  console.log('The Epoch Value is: ' + theEpoch);
-//  var beforeEpoch = theEpoch+86401;
+  //var beforeEpoch = parseInt(theEpoch)+86401;
+  //console.log(beforeEpoch)
 
   fetch(`https://www.strava.com/api/v3/athlete/activities?access_token=${stravaToken}&after=${theEpoch}`)
   .then(response => {
   if (response.ok) {
       response.json().then(data => {
-//      console.log(data);
+        let loopCount=data.length;
+        if (data.length>3) loopCount=3;
+//      console.log(data.length);
 //      if (data[0]) console.log(data[0].id);else console.log('No Strava Data Available'); 
 
-      for(var i=0; i<3; i++){
+      for(var i=0; i<loopCount; i++){
         if(data[i].suffer_score>sufferScore){
           sufferScore=data[i].suffer_score;
           raceID=data[i].id;

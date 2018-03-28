@@ -166,9 +166,10 @@ export default class RaceListApp extends React.Component {
   }
 
   getStravaData(e){
-    
+//    console.log(e.target.dataset.raceDate)
      e.preventDefault();
-     let theDate = new  Date(e.currentTarget.dataset.raceDate);
+//     let theDate = new  Date(e.currentTarget.dataset.raceDate);
+     let theDate = new  Date(e.target.dataset.raceDate);
      let theEpoch = theDate.getTime()/1000.0;
      fetch(`/api/strava/activities/${theEpoch}`, {
       headers: { 
@@ -181,7 +182,7 @@ export default class RaceListApp extends React.Component {
        response.json().then(raceID => {
 
 
-//      console.log(data);
+//    console.log(data);
 window.open(`https://www.strava.com/activities/${raceID}`);  
         
 
